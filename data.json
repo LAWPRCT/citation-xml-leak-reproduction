@@ -1,0 +1,117 @@
+{
+  "system_prompt": "You are a helpful legal assistant. You should use citations whenever possible.",
+  "user_question": "using one explore agent (and it's export tool), explore the nurse negligent theory find some facts that we might be missing there. Use no other tools.\n\nDon't propose any facts just yet, but list all the facts with citations.",
+  "clean_task": "Investigate the nurse negligence theory and export key documents.",
+  "citation_language_task": "Investigate the theory of nurse negligence in this case. I need to find all facts that support or relate to a claim that a nurse (or nursing staff) acted negligently. Search broadly across all sources and record types.\n\nSpecifically look for:\n- The identity/role of any nurse(s) involved (names, titles, employer, shift)\n- What the nurse was supposed to do (standard of care, protocols, orders, policies)\n- What the nurse actually did or failed to do (acts/omissions: failure to monitor, failure to assess, failure to notify physician, medication errors, charting/documentation failures, failure to respond to alarms or patient complaints, delays)\n- Timeline of the nurse's interactions with the patient\n- Any deviations from physician orders or nursing protocols\n- Causation links between the nurse's conduct and the patient's injury/harm\n- Any testimony, depositions, expert opinions, incident reports, or medical records referencing nursing conduct\n- Any internal communications, complaints, or admissions about the nurse's care\n\nFor each relevant finding, capture the exact source name, the source ID, the page/location, and a verbatim or near-verbatim supporting quote so I can cite it precisely. Export the key documents you rely on.",
+  "explore_tool": {
+    "name": "explore",
+    "description": "Launch a research sub-agent to deeply explore case data when you\nneed to cast a wide net before narrowing scope. The sub-agent\nsearches, reads, and cross-references across many documents and\nrecord types, then returns\n the most relevant document blocks for citation.\n\nThe sub-agent exports key documents it finds so you CAN cite\nspecific passages from its research. You do not need to re-fetch\ndocuments the sub-agent already read.\n\nUse this when:\n- You need to survey many documents to find which ones are relevant\n- The research question is broad and requires searching from\n  multiple angles before you know where to look\n- You need to build a map of the case data before diving deep\n\nDo NOT use this when:\n- The user asks a question you can answer with 1-2 direct tool calls\n- You already know which documents or records to look at\n\nProvide a clear, specific research task. The more specific your\ninstructions, the better the results.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "task": {
+          "type": "string",
+          "description": "A clear description of what to research. Be specific about what information you need, what records to look at, and what questions to answer. Example: 'Find all documents and facts related to the plaintiff\\'s medical treatment timeline, including doctor names, dates, and key findings.'"
+        },
+        "thoroughness": {
+          "type": "string",
+          "enum": [
+            "quick",
+            "moderate",
+            "thorough"
+          ],
+          "description": "How deeply to research. 'quick' for a fast scan (2-3 tool calls), 'moderate' for balanced depth (default), 'thorough' for exhaustive investigation across many sources."
+        }
+      },
+      "required": [
+        "task"
+      ]
+    }
+  },
+  "search_results": [
+    {
+      "type": "search_result",
+      "source": "https://foo.bar/files/internal-investigation-findings.pdf",
+      "title": "Internal Investigation Findings",
+      "content": [
+        {
+          "type": "text",
+          "text": "TEXOMA GENERAL HOSPITAL SUMMARY OF INTERNAL INVESTIGATION\nInvestigator: Derek Shepard\nSubject of Investigation: Death of Mulder Scully; Ransomware Attack April 1-2, 2017\nDate of Report: April 17, 2017\nDear Board of Directors:\nI have completed my internal investigation regarding the death of a patient named Mulder Scully that occurred in Room 1007 at Texoma General Hospital on April 2, 2017. This report summarizes my findings and proposed recommendations. To prepare this report, I analyzed the relevant medical records for the patient and interviewed the nurse and treating physician, Alex Karev and Dr. Arizona Robbins, respectively. I also reviewed section 4.2 of TGH\u2019s Policies and Procedures regarding ransomware attacks. Finally, I note that Avery Johnson was arrested on April 4, 2017 and charged with a federal hacking crime for the ransomware attack on TGH.\nMulder Scully, the patient, died as a result of an allergic reaction to Bocotraxophen, which is a derivative of naproxen and is prescribed to reduce swelling and pain. Alex Karev told me that the patient\u2019s family member, Dana Scully, was present during intake and that Dana was the one who mentioned the naproxen allergy. I confirmed the allergy was noted in the patient\u2019s electronic medical chart. However, when Dr. Robbins decided to prescribe Bocotraxophen on April 2 to address the patient\u2019s swelling, the electronic medical records were not accessible due to the ransomware attack.\nAt that time, Nurse Karev should have remembered that the patient was allergic to naproxen\u2014 even without the electronic medical records, which certainly contributed to the patient\u2019s death\u2014 since it had been barely 24 hours since the patient was admitted. At a minimum, Nurse Karev should have telephoned Dana Scully to confirm the patient\u2019s allergies, especially since Dana was the one who told Nurse Karev about the second allergy the day before and had left her contact number. Alex Karev failed on both of these points. Even if Dr. Robbins was in the examination room when Dana reminded Mr. Scully that he had a naproxen allergy, that does not excuse Nurse Karev\u2019s failures.\nAccordingly, it is my recommendation that Alex Karev should be terminated for failure to meet the appropriate standards of care for nurses employed by Texoma General Hospital.\nDerek Shepard\nExhibit 8"
+        }
+      ],
+      "citations": {
+        "enabled": true
+      }
+    },
+    {
+      "type": "search_result",
+      "source": "https://foo.bar/files/internal-investigation-findings.pdf",
+      "title": "Internal Investigation Findings",
+      "content": [
+        {
+          "type": "text",
+          "text": "To prepare this report, I analyzed the relevant medical records for the patient and interviewed the nurse and treating physician, Alex Karev and Dr. Arizona Robbins, respectively. I also reviewed section 4.2 of TGH\u2019s Policies and Procedures regarding ransomware attacks. Finally, I note that Avery Johnson was arrested on April 4, 2017 and charged with a federal hacking crime for the ransomware attack on TGH"
+        }
+      ],
+      "citations": {
+        "enabled": true
+      }
+    },
+    {
+      "type": "search_result",
+      "source": "https://foo.bar/files/alex-karev-statement.pdf",
+      "title": "Alex Karev Statement",
+      "content": [
+        {
+          "type": "text",
+          "text": "was the only one. I asked if he was sure, and Mr. Scully said \u201cyes.\u201d You can see all of that in Exhibit 3, which is a copy of his medical chart as it would appear on the mePad screen.\nI moved on to the next section on the intake form using a mePad, but then Mr. Scully\u2019s adult child, Dana Scully, who was also there said, \u201cDad, aren\u2019t you allergic to naproxen?\u201d Naproxen is an anti-inflammatory, pain reliever, and fever reducer. The patient thought for a moment and then said naproxen was also an allergy. I could tell the patient was clearly having memory troubles, but it wasn\u2019t out of the ordinary for someone as old as Mr. Scully. I went back to the allergy section on my mePad and recorded naproxen. Then I put a bright red wristband that says \u201cALLERGY\u201d on the patient\u2019s right wrist. The allergy wristband doesn\u2019t have room to write down each individual allergy, but it reminds the medical staff to double-check for any allergies before giving any medication. Exhibit 1 is a picture of a red \u201cALLERGY\u201d wristband like the kind TGH used when I worked there\u2014the same kind I put on Mr. Scully\u2019s wrist. I\u2019m pretty sure Dr. Robbins was in the room when the family member mentioned the second allergy, but in any event Dr. Robbins came into the exam room towards the end of the intake process. Dr. Robbins came by to ask about a different patient but took a few minutes to examine Mr. Scully\u2019s injured hand. Dr. Robbins prescribed 10 milligrams of hydrocodone and ordered a CT scan to check the extent of the injuries, which is what I would have recommended. Mr. Scully was taken to have the CT scan done.\nDr. Robbins reviewed the CT scan results and recommended that Mr. Scully stay overnight for observation and to ensure the swelling went down. I moved Mr. Scully into a room 1007 on the tenth floor of the A&E department. I think I got Mr. Scully situated in Room 1007 about 5:00 p.m. that day because my shift ended at 6:00 p.m. and Mr. Scully asked me several times what time it was, which I attributed to the hydrocodone. I also know I left about an hour after finishing up with Mr. Scully. My next shift was on April 2. I arrived just before 8:00 a.m. and tried to read all the reports for the patients in the A&E department to get up to speed for anything that had happened while I was off. There is a pretty high turnover of patients in the A&E department, and sometimes a patient\u2019s condition gets better or worse when you\u2019re not on shift. Another nurse told me that the hospital had been hit by a ransomware attack that had locked up all the medical records. I had heard of ransomware attacks but I had no idea what it actually meant. Sure enough, the mePad couldn\u2019t access anything on the paperless system. All the medical equipment was working like normal. It was just the patient medical records that we couldn\u2019t access on the \u201cpaperless\u201d network.\nI stopped by Room 1007 and saw Mr. Scully and Dana about 10:30 a.m. Mr. Scully still had a lot of swelling in his left hand but there was some improvement from the day before. I told them it just might take some extra time for the swelling to go down. I made rounds on the tenth floor to check on the 12 other patients who I was caring for, and I checked back in on Mr. Scully about 4:00 p.m. The swelling seemed to have gotten worse. I called Dr. Robbins, reported the\nFACT STATEMENT OF ALEX KAREV\nPage 2 of 5"
+        }
+      ],
+      "citations": {
+        "enabled": true
+      }
+    },
+    {
+      "type": "search_result",
+      "source": "https://foo.bar/files/alex-karev-statement.pdf",
+      "title": "Alex Karev Statement",
+      "content": [
+        {
+          "type": "text",
+          "text": "nt back to the allergy section on my mePad and recorded naproxen. Then I put a bright red wristband that says \u201cALLERGY\u201d on the patient\u2019s right wrist. The allergy wristband doesn\u2019t have room to write down each individual allergy, but it reminds the medical staff to double-check for any allergies before giving any medication. Exhibit 1 is a picture of a red \u201cALLERGY\u201d wristband like the kind TGH used when I worked there\u2014the same kind I put on M"
+        }
+      ],
+      "citations": {
+        "enabled": true
+      }
+    },
+    {
+      "type": "search_result",
+      "source": "https://foo.bar/files/arizona-robbins-statement.pdf",
+      "title": "Arizona Robbins Statement",
+      "content": [
+        {
+          "type": "text",
+          "text": "this on the patient\u2019s medical chart reproduced as Exhibit 3. The results of that CT scan showed there was not any structural damage, but I held the patient overnight for additional observation.\nThe next day, on April 2, Nurse Karev called me to reevaluate the patient. I examined Mr. Scully and noted his hand was still very swollen. There was very little improvement from the day before, if any. I wrote a prescription for Bocotraxophen and penicillin to combat the swelling and manage the patient\u2019s pain, and prevent infection. Nurse Karev pointed out that the patient was wearing a red \u201callergy\u201d band and that we still couldn\u2019t access the medical records on the PMT, so I asked the patient to verify his allergies. Mr. Scully only said penicillin, and I changed the antibiotic to Yarbrothromax and directed Nurse Karev to fill the prescriptions and administer the medication.\nAbout 45 minutes later, Nurse Karev paged me that something was wrong with Mr. Scully. I rushed to Room 1007 and determined the patient presented with additional complications, including difficulty breathing, hypotension, and a rash near his face. At this time, I still could not access the patient\u2019s electronic medical chart to determine if something was missed from the patient\u2019s medical history, and that was extremely frustrating. I did not believe the patient was having an allergic reaction to the medications because anaphylaxis symptoms (skin reactions, hypotension, difficulty breathing, and dizziness) vary greatly from person to person, and we had eliminated the possible allergic reaction to penicillin. Before I could figure out what to do next, Nurse Karev exclaimed the medical records were accessible again on the PMT. I checked the records on the mePad in that instant, which looked exactly like Exhibit 3. It was that moment that I realized the patient had a second allergy he never mentioned\u2014naproxen. I knew that the medical trials for Bocotraxophen\u2014a derivative of Naproxen\u2014showed a vanishingly small risk of serious, life-threatening reactions from persons with a naproxen allergy, so I still didn\u2019t think Mr. Scully was having an allergic reaction. This was especially true when Mr. Scully did not respond to the epinephrine after we called the Code Blue. Then Mr. Scully suffered cardiac arrest and we aggressively tried to resuscitate him. I was not present when Mr. Scully ultimately died because I had run to call another doctor for a consult, and Nurse Karev and the staff were more than capable of handling the Code Blue. I discovered later that the patient\u2019s family member had advised the nurse upon intake about the second allergy to naproxen, which Nurse Karev just forgot. About a week after Mr. Scully died, I spoke to an internal investigator at the hospital named Derek Shepard and told him everything I could remember.\nIn my medical opinion, Mr. Scully died as a direct result of our inability to access the electronic medical records after they were hijacked. Hijacked! The Defendant, this idiot, prevented us from properly treating Mr. Scully. Mr. Scully\u2019s family sued the hospital, and me, for wrongful death. We all settled. It was the first time I have ever been sued. It\u2019s a tragedy that could have been avoided if we had stayed with the paper charts. I\u2019ve lost patients before, of course, and it\u2019s never easy to tell a family member that someone has died despite our best efforts. But to discover that a\nFACT STATEMENT OF DR. ARIZONA ROBBINS\nPage 2 of 5"
+        }
+      ],
+      "citations": {
+        "enabled": true
+      }
+    },
+    {
+      "type": "search_result",
+      "source": "https://foo.bar/files/arizona-robbins-statement.pdf",
+      "title": "Arizona Robbins Statement",
+      "content": [
+        {
+          "type": "text",
+          "text": "xt day, on April 2, Nurse Karev called me to reevaluate the patient. I examined Mr. Scully and noted his hand was still very swollen. There was very little improvement from the day before, if any. I wrote a prescription for Bocotraxophen and penicillin to combat the swelling and manage the patient\u2019s pain, and prevent infection. Nurse Karev pointed out that the patient was wearing a red \u201callergy\u201d band and that we still couldn\u2019t access the medical records on the PMT, so I asked the patient to verify his allergies. Mr. Scully only said penicillin, and I changed the antibiotic to Yarbrothromax and directed Nurse Karev to fill the prescriptions and administer the medication.\nAbout 45 minutes late"
+        }
+      ],
+      "citations": {
+        "enabled": true
+      }
+    }
+  ]
+}

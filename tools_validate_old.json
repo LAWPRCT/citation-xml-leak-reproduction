@@ -1,0 +1,62 @@
+[
+  {
+    "name": "propose-shipment-labels",
+    "description": "Propose source tags to be added to the case.\nBEFORE proposing, use query-case-data with model=\"source_tag\" to check existing tags and avoid duplicates.\nSource tags are independent objects \u2014 removing a tag from sources does not delete it, and bulk edits never\ndestroy tags. Only explicit deletion removes a tag.\nMANDATORY: Your response MUST only acknowledge completion - do not repeat, summarize, or list the proposed\nsource tags as they display automatically in the UI.\n- Do not include citations in the tag descriptions - write clear, standalone descriptions.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "input": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "input"
+      ]
+    }
+  },
+  {
+    "name": "describe-fleet-data-model",
+    "description": "REQUIRED before query-case-data. You MUST call this tool\nfor every model you intend to query BEFORE calling\nquery-case-data. It returns the exact filter names, field\nnames, sort options, and query builder fields. Without\nthis information, query-case-data calls will fail.\n\nCall this for EVERY model mentioned or implied by the\nuser's request. For example, if the user asks about\n\"sources with many citations\", describe both \"source\" and\n\"citation\" \u2014 parent models often have aggregated fields\n(like citation_count on source) that you would otherwise\nmiss.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "input": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "input"
+      ]
+    }
+  },
+  {
+    "name": "query-fleet-data",
+    "description": "PREREQUISITE: Before calling this tool, you MUST call\ndescribe-case-data-model for EVERY model you intend to\nquery. Do NOT skip this step \u2014 without it you will not\nknow the valid filter names, field names, or sort options\nand your query WILL fail. If you have not yet called\ndescribe-case-data-model for this model in this\nconversation, stop and call it first.\n\nQuery structured case data by model type. Returns filtered,\npaginated results with a total count.\n\n**Pagination:** Results are paginated (default 25, max 200).\nUse limit/offset for most models. For sources, use\ncursor-based pagination: pass back \"next_cursor\" as\n\"cursor\" to get the next page.\n\n**Query builder:** Sources and facts support advanced\nfiltering via the \"query\" parameter \u2014 an array of filter\nobjects with field, lookup, value, and optional\ninvert/conjoined. Call describe-case-data-model to see\navailable query fields and lookups.\n\nAvailable models:\n- source: Documents and files (cursor-based pagination)\n- source_tag: Tags applied to sources\n- case_contact: Contacts linked to this case\n- issue: Legal issues\n- claim: Legal claims (groups of issues)\n- task: Case tasks\n- fact: Timeline facts (accepted only)\n- fact_note: Notes on facts\n- citation: Links between facts and sources\n- designation: Deposition designations\n- task_note: Notes on tasks\n- draft: Draft documents\n- upload: File uploads\n- conversation: AI conversations (yours only)\n- conversation_message: Messages in conversations (preview only; use read-conversation-message for full content)\n\nFor full-text search with wildcards, fuzzy matching, or\nboolean operators across multiple record types, use\ncase-search instead.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "input": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "input"
+      ]
+    }
+  },
+  {
+    "name": "search-shipments-keyword",
+    "description": "Search for documents and sources using keyword matching. This tool searches specifically\nthrough document content, names, memos, titles, and other source metadata using keyword\nand phrase matching. Use this when you need to find specific documents, files, or sources\nby searching for terms that appear in the document content or metadata. The search uses\nElasticsearch query string syntax for advanced searches including wildcards, phrase matching,\nand boolean operators. The benefit of this tool is that it allows you to search ALL sources\nand not only those indexed for semantic search.\n\nIMPORTANT: Content highlights include a 'location' field which typically represents a zero-indexed\npage number (page 1 = location \"0\", page 2 = location \"1\", etc.). In some cases, this location may\nrepresent something other than pages, such as timestamps or spreadsheet sections.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "input": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "input"
+      ]
+    }
+  }
+]

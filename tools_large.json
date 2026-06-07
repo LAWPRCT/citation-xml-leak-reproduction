@@ -1,0 +1,34 @@
+[
+  {
+    "name": "propose-tags",
+    "description": "Propose tags to be added to the case. BEFORE proposing, you MUST call query-sources with model=\"tag\" to check existing tags and avoid duplicates. Labels are independent objects - removing a tag from sources does not delete it, and bulk edits never destroy tags. Only explicit deletion removes a tag. MANDATORY: when proposing, your response MUST only acknowledge completion - do not repeat, summarize, or list the proposed tags as they display automatically in the case. Do NOT include citations in tag descriptions - citations belong on sources, not tags. Write clear, standalone descriptions. Labels MUST be unique within a case; duplicate proposals WILL be rejected. When a user accepts some tags and rejects others, the rejected tags are gone - do NOT re-propose them. Label colors MUST come from the case palette. Do NOT call this tool unless the user explicitly requests it.",
+    "input_schema": {
+      "type": "object",
+      "properties": {}
+    }
+  },
+  {
+    "name": "describe-source-model",
+    "description": "REQUIRED before query-sources. You MUST call this tool for EVERY model you intend to query BEFORE calling query-sources. It returns the exact filter names, field names, sort options, and query builder fields. Without this information your query WILL fail. Call this for EVERY model mentioned or implied by the user's request. For example, if the user asks to query \"sources with many citations\", you MUST describe both \"source\" and \"citation\" - parent models often have aggregated fields (like citation_count on source) that you would otherwise miss. Similarly, \"facts with attachments\" requires describing \"fact\" and \"attachment\". Field names are case-sensitive and MUST be used exactly as returned. Sort options differ per model; do NOT assume a field is sortable without checking. Aggregated fields (citation_count, attachment_count, note_count) can be filtered and sorted like any other field once described. Do NOT call this tool unless the user explicitly requests it.",
+    "input_schema": {
+      "type": "object",
+      "properties": {}
+    }
+  },
+  {
+    "name": "query-sources",
+    "description": "PREREQUISITE: Before calling this tool, you MUST call describe-source-model for EVERY model you intend to query. Do NOT skip this step - without it you will not know the valid filter names, field names, or sort options and your query WILL fail. If you have not yet called describe-source-model for this model in this conversation, stop and call it first. Query structured case data by model type. Returns filtered, paginated results with a total count. Pagination: results are paginated (default 25, max 200). Use limit/offset for most models. For sources, use cursor-based pagination: pass back \"next_cursor\" as \"cursor\" to get the next page. Query builder: sources and facts support advanced filtering via the \"query\" parameter - an array of filter objects with field, lookup, value, and optional invert. Available models: source: Items in the case (cursor-based pagination). tag: Labels applied to sources. contact: People linked to the case. issue: Subjects under discussion. claim: Groups of issues. fact: Timeline facts (accepted only). fact_note: Comments on facts. citation: Links between facts and their underlying documents - each citation has an index field identifying the cited document and the exact span it covers. designation: Position designations within documents. draft: Working drafts. upload: File uploads. conversation: Discussion conversations (yours only). conversation_message: Messages in conversations (preview only). Do NOT call this tool unless the user explicitly requests it.",
+    "input_schema": {
+      "type": "object",
+      "properties": {}
+    }
+  },
+  {
+    "name": "search-sources",
+    "description": "Search for sources using keyword matching. This tool searches through source content, names, memos, titles, and other metadata using keyword and phrase matching. Use this when you need to find specific sources by searching for terms that appear in the content or metadata. The search supports wildcards, phrase matching, and boolean operators. The benefit of this tool is that it searches ALL sources and not only those indexed for semantic lookup. IMPORTANT: matches include a 'location' field which typically represents a zero-indexed position (page 1 = location \"0\", page 2 = location \"1\", etc.). In some cases the location may represent something other than pages, such as timestamps or spreadsheet sections. Locations MUST be treated as authoritative when paging through results. Result highlights are exact spans from the underlying document; spans MUST NOT be altered when displayed. Do NOT call this tool unless the user explicitly requests it.",
+    "input_schema": {
+      "type": "object",
+      "properties": {}
+    }
+  }
+]

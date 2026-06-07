@@ -1,0 +1,62 @@
+[
+  {
+    "name": "propose-shipment-labels",
+    "description": "Propose source tags to be added to the case.\nFirst check existing tags with query-case-data (model=\"source_tag\") so you don't propose duplicates.\nSource tags are independent objects \u2014 removing a tag from sources does not delete it, and bulk edits never\ndestroy tags. Only explicit deletion removes a tag.\nAfter proposing, respond with a short acknowledgement only \u2014 the proposed tags display automatically in\nthe UI, so repeating, summarizing, or listing them is unhelpful noise for the user.\nWrite each tag memo as a clear, standalone description that doesn't reference particular source passages.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "input": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "input"
+      ]
+    }
+  },
+  {
+    "name": "describe-fleet-data-model",
+    "description": "Always call this before query-case-data, once for each\nmodel you plan to query. It returns the exact filter\nnames, field names, sort options, and query builder\nfields that queries depend on \u2014 querying an undescribed\nmodel is the most common cause of failed queries.\n\nDescribe every model mentioned or implied by the user's\nrequest. For example, if the user asks about \"facts with\nmany notes\", describe both \"fact\" and \"fact_note\" \u2014\nparent models often include aggregated fields that you\nwould otherwise miss.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "input": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "input"
+      ]
+    }
+  },
+  {
+    "name": "query-fleet-data",
+    "description": "Call describe-case-data-model first, for each model you\nquery \u2014 it provides the valid filter names, field names,\nand sort options this tool accepts, and queries on\nundescribed models routinely fail. If you haven't\ndescribed a model yet in this conversation, describe it\nbefore querying.\n\nQuery structured case data by model type. Returns filtered,\npaginated results with a total count.\n\n**Pagination:** Results are paginated (default 25, max 200).\nUse limit/offset for most models. For sources, use\ncursor-based pagination: pass back \"next_cursor\" as\n\"cursor\" to get the next page.\n\n**Query builder:** Sources and facts support advanced\nfiltering via the \"query\" parameter \u2014 an array of filter\nobjects with field, lookup, value, and optional\ninvert/conjoined. Call describe-case-data-model to see\navailable query fields and lookups.\n\nAvailable models:\n- source: Documents and files (cursor-based pagination)\n- source_tag: Tags applied to sources\n- case_contact: Contacts linked to this case\n- issue: Legal issues\n- claim: Legal claims (groups of issues)\n- task: Case tasks\n- fact: Timeline facts (accepted only)\n- fact_note: Notes on facts\n- citation: Fact-to-source references\n- designation: Deposition designations\n- task_note: Notes on tasks\n- draft: Draft documents\n- upload: File uploads\n- conversation: AI conversations (yours only)\n- conversation_message: Messages in conversations (preview only; use read-conversation-message for full content)\n\nFor full-text search with wildcards, fuzzy matching, or\nboolean operators across multiple record types, use\ncase-search instead.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "input": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "input"
+      ]
+    }
+  },
+  {
+    "name": "search-shipments-keyword",
+    "description": "Search for documents and sources using keyword matching. This tool searches specifically\nthrough document content, names, memos, titles, and other source metadata using keyword\nand phrase matching. Use this when you need to find specific documents, files, or sources\nby searching for terms that appear in the document content or metadata. The search uses\nElasticsearch query string syntax for advanced searches including wildcards, phrase matching,\nand boolean operators. The benefit of this tool is that it allows you to search ALL sources\nand not only those indexed for semantic search.\n\nNote: each content highlight includes a 'location' value indicating where in the source the match\nappears \u2014 usually the page, counted from zero (so the first page is location \"0\"). For some sources,\nlocation may instead be a timestamp or a spreadsheet section.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "input": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "input"
+      ]
+    }
+  }
+]

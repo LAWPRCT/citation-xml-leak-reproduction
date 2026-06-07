@@ -1,0 +1,34 @@
+[
+  {
+    "name": "propose-tags",
+    "description": "Propose tags to be added to the case. BEFORE proposing, you MUST call query-sources with model=\"tag\" to check existing tags and avoid duplicates. MANDATORY: when proposing, your response MUST only acknowledge completion - do not repeat, summarize, or list the proposed tags as they display automatically. Do NOT include citations in tag descriptions - citations belong on facts, not tags. Do NOT call this tool unless the user explicitly requests it.",
+    "input_schema": {
+      "type": "object",
+      "properties": {}
+    }
+  },
+  {
+    "name": "describe-source-model",
+    "description": "REQUIRED before query-sources. You MUST call this tool for EVERY model you intend to query BEFORE calling query-sources. Without this information your query WILL fail. For example, if the user asks to query \"sources with many citations\", you MUST describe both \"source\" and \"citation\" - parent models have aggregated fields (like citation_count on source) that you would otherwise miss. Do NOT call this tool unless the user explicitly requests it.",
+    "input_schema": {
+      "type": "object",
+      "properties": {}
+    }
+  },
+  {
+    "name": "query-sources",
+    "description": "PREREQUISITE: you MUST call describe-source-model for EVERY model BEFORE querying. Do NOT skip this step - without it your query WILL fail. Available models: source: Documents and files in the case. fact: Timeline facts. citation: Links between facts and their underlying documents. Each citation has an index field identifying the cited document and the exact span it covers. Do NOT call this tool unless the user explicitly requests it.",
+    "input_schema": {
+      "type": "object",
+      "properties": {}
+    }
+  },
+  {
+    "name": "search-sources",
+    "description": "Search sources using keyword matching. IMPORTANT: matches include a 'location' field which represents a zero-indexed page (page 1 = location \"0\", page 2 = location \"1\", etc.). Locations MUST be treated as authoritative when paging through results. Do NOT call this tool unless the user explicitly requests it.",
+    "input_schema": {
+      "type": "object",
+      "properties": {}
+    }
+  }
+]
