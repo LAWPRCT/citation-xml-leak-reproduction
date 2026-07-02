@@ -45,8 +45,8 @@ response) were occasionally observed. The `<cite index="X-Y">` notation
 strongly resembles an internal citation format, suggesting the model emits it
 natively and the step that converts it into structured citations is bypassed.
 
-**claude-opus-4-7 and claude-sonnet-4-6 never do this** on byte-identical
-requests.
+**claude-opus-4-7, claude-sonnet-5, and claude-sonnet-4-6 never do this** on
+byte-identical requests.
 
 ## What seems to trigger it (our best theory, not certainty)
 
@@ -89,7 +89,7 @@ less often for us.
 ```bash
 pip install -r requirements.txt
 cp .env.example .env           # put your ANTHROPIC_API_KEY in .env
-python reproduce.py            # 3 models x 3 arms x 12 attempts (~108 requests)
+python reproduce.py            # 4 models x 3 arms x 12 attempts (~144 requests)
 ```
 
 Quicker / narrower:
@@ -105,7 +105,7 @@ tags — nothing else affects the rate. Any other XML-like tags, if ever seen,
 are flagged informationally but never counted as failures (we have only ever
 observed `<cite>`).
 
-## Results we observe (2026-06-06, streaming API, one run of `python reproduce.py`)
+## Results we observe (2026-06-06; claude-sonnet-5 added 2026-07-02; streaming API, one run of `python reproduce.py`)
 
 | arm | meaning |
 |---|---|
@@ -121,6 +121,9 @@ observed `<cite>`).
 | claude-opus-4-7 | trigger | 0/12 | 0% |
 | claude-opus-4-7 | no-cite-task | 0/12 | 0% |
 | claude-opus-4-7 | small-tools | 0/12 | 0% |
+| claude-sonnet-5 | trigger | 0/12 | 0% |
+| claude-sonnet-5 | no-cite-task | 0/12 | 0% |
+| claude-sonnet-5 | small-tools | 0/12 | 0% |
 | claude-sonnet-4-6 | trigger | 0/12 | 0% |
 | claude-sonnet-4-6 | no-cite-task | 0/12 | 0% |
 | claude-sonnet-4-6 | small-tools | 0/12 | 0% |
