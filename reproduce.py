@@ -11,7 +11,7 @@ removes one ingredient per arm, across three models:
       trigger      — all four ingredients (fails ~25-40% on claude-opus-4-8)
       no-cite-task — same, but the prior tool_use task has no quote/cite language
       small-tools  — same, but the tool descriptions are ~2K chars instead of ~5K
-    models: claude-opus-4-8, claude-opus-4-7, claude-sonnet-4-6
+    models: claude-opus-4-8, claude-opus-4-7, claude-sonnet-5, claude-sonnet-4-6
 
 Only (trigger, claude-opus-4-8) fails. Every other cell is clean.
 
@@ -40,7 +40,7 @@ from anthropic import Anthropic
 _HERE = os.path.dirname(os.path.abspath(__file__))
 
 MAX_TOKENS = 16384
-DEFAULT_MODELS = ["claude-opus-4-8", "claude-opus-4-7", "claude-sonnet-4-6"]
+DEFAULT_MODELS = ["claude-opus-4-8", "claude-opus-4-7", "claude-sonnet-5", "claude-sonnet-4-6"]
 ARMS = ["trigger", "no-cite-task", "small-tools"]
 
 _print_lock = threading.Lock()
